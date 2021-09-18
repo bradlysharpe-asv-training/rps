@@ -4,9 +4,10 @@
   "description": "AI-powered Rock, Paper, Scissors game",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "webpack --watch",
-    "build": "rm -rf dist && webpack --mode development",
-    "run": "npm run build && node dist/index.js"
+    "dev": "NODE_ENV=development webpack",
+    "build": "webpack",
+    "run": "npm run build && node dist/index.js",
+    "run:dev": "NODE_ENV=development nodemon build/index.js"
   },
   "repository": {
     "type": "git",
@@ -31,9 +32,11 @@
     "babel-preset-stage-0": "^6.24.1",
     "css-loader": "^6.2.0",
     "file-loader": "^6.2.0",
+    "nodemon": "^2.0.12",
     "style-loader": "^3.2.1",
     "webpack": "^5.53.0",
     "webpack-cli": "^4.8.0",
-    "webpack-node-externals": "^3.0.0"
+    "webpack-node-externals": "^3.0.0",
+    "webpack-shell-plugin": "^0.5.0"
   }
 }

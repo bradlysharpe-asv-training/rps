@@ -1,31 +1,27 @@
-const path = require('path')
-const webpack = require('webpack')
-const nodeExternals = require('webpack-node-externals')
+const path = require('path');
+const nodeExternals = require('webpack-node-externals');
+const WebpackShellPlugin = require('webpack-shell-plugin');
+
+const {
+  NODE_ENV = 'production',
+} = process.env;
 
 module.exports = {
-  entry: {
-    server: ['babel-polyfill', './src/index.js'],
-  },
-  output: {
-    path: path.join(__dirname, 'dist'),
-    publicPath: '/',
-    filename: '[name].js'
-  },
+  entry: './src/index.js',
+  mode: NODE_ENV,
+  watch: NODE_ENV === 'development',
   target: 'node',
-  node: {
-    // Need this when working with express, otherwise the build fails
-    __dirname: false,   // if you don't put this is, __dirname
-    __filename: false,  // and __filename return blank or /
+  output: {
+    path: path.resolve(__dirname, 'build'),
+    filename: 'index.js'
   },
-  externals: [nodeExternals()], // Need this to avoid error when working with Express
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: "babel-loader",
-      }
-    ]
+  resolve: {
+    extensions: ['.ts', '.js'],
   },
-  plugins: []
+  externals: [nodeExternals()],
+  plugins: [
+    new WebpackShellPlugin({
+      onBuildEnd: ['npm run run:dev']
+    })
+  ]
 }
